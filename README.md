@@ -24,8 +24,29 @@ Proyecto académico de ingeniería de datos para el monitoreo continuo y detecci
 
 ## 3. Guía de Ejecución
 
-1. **Levantar infraestructura y crear rutas/tópico:**
-   ```bash
-   docker compose up -d
-   docker exec namenode hdfs dfs -mkdir -p /scada/processed /scada/metrics /scada/anomalies /scada/checkpoints
-   docker exec kafka /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic sensores_scada --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+**Prerrequisitos:** Docker y Docker Compose activos, Python 3.9+ con `kafka-python-ng` (`pip install kafka-python-ng`), y el dataset SCADA descomprimido en `data/raw/` (o usar `data/sample_raw.csv` para pruebas ligeras).
+
+```bash
+# 1. Levantar contenedores del clúster (Kafka, NameNode, DataNode, Spark)
+docker compose up -d
+
+# 2. Crear estructura de directorios en HDFS y tópico en Kafka
+docker exec namenode hdfs dfs -mkdir -p /scada/processed /scada/metrics /scada/anomalies /scada/checkpoints
+docker exec namenode hdfs dfs -chmod -R 777 /scada
+docker exec kafka /opt/kafka/bin/kafka-topics.sh --create --if-not-exists --topic sensores_scada --bootstrap-server localhost:9092 --partitions 1 --replication-factor 1
+
+# 3. Iniciar Spark Structured Streaming en segundo plano y verificar log
+docker exec -d spark /bin/bash -c "/opt/spark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.3 /opt/spark/work-dir/processing/spark_streaming.py --starting-offsets earliest > /tmp/spark_stream.log 2>&1"
+docker exec spark tail -n 20 /tmp/spark_stream.log
+
+# 4. Ejecutar el simulador de telemetría SCADA hacia Kafka
+python3 producer/kafka_producer.py --month 2020_01 --rate 2500 --max-events 25000
+
+# 5. (Esperar 15-20 s) Verificar archivos Parquet almacenados en HDFS
+docker exec namenode hdfs dfs -ls -R /scada/processed /scada/metrics
+
+# 6. Ejecutar detección estadística de anomalías (|Z| > 3.0) y exportar reportes/gráficas en results/
+docker exec spark /opt/spark/bin/spark-submit /opt/spark/work-dir/analysis/anomaly_detection.py
+
+# 7. Apagar el clúster al finalizar (opcional)
+docker compose down
