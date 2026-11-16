@@ -1,4 +1,5 @@
 # Mantenimiento Predictivo en Líneas de Soldadura Automotriz mediante Arquitectura Big Data en Tiempo Real
+<img width="1024" height="572" alt="image" src="https://github.com/user-attachments/assets/0fbab0b0-8ad4-417a-a876-4e6ff3d31044" />
 
 Proyecto académico de ingeniería de datos para el monitoreo continuo y detección estadística de anomalías sobre telemetría industrial SCADA (**I-BiDaaS / Centro Ricerche Fiat - CRF**).
 
