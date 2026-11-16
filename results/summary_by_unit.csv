@@ -1,0 +1,10 @@
+physical_quantity,unit,total_records,active_sensors,global_mean,global_min,global_max,anomaly_count
+Acceleration,mg,22468,60,64.7213,0.143,26967.041,271
+Flow,l/min,1064,8,25.4688,0.0,75.1,15
+Pressure,bar,662,8,3.8847,-0.21,5.18,10
+Energy vector,l,190,2,92278550.2105,92276340.0,92280880.0,0
+Velocity,mm/s,176,16,3.2898,0.003,53.169,1
+Unknown,°C,172,9,17.657,15.9,19.0,1
+Unknown,m³/h std.,171,1,28.586,19.1,65.4,4
+Unknown,m³ std.,87,1,956864.4391,956840.6,956887.3,0
+Unknown,Nl/min,10,1,320.51,229.0,371.3,0

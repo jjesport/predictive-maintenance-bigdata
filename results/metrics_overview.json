@@ -1,0 +1,8 @@
+{
+  "total_processed_records": 25000,
+  "total_1min_windows": 1198,
+  "distinct_active_sensors": 106,
+  "z_score_threshold": 3.0,
+  "total_anomalies": 302,
+  "anomaly_rate_percent": 1.208
+}

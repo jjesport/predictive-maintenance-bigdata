@@ -1,25 +1,8 @@
-# Python
+data/raw/
+*.zip
+*.tar.gz
 __pycache__/
 *.py[cod]
 .venv/
 venv/
-
-# Datos grandes
-data/raw/*
-data/processed/*
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-
-# Resultados generados
-results/*
-
-# Entornos y secretos
-.env
 *.log
-
-# IDE
-.vscode/
-.idea/
-
-# Sistema
-.DS_Store
